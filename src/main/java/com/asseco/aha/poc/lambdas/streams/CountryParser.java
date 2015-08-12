@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import com.asseco.aha.poc.lambdas.streams.dto.Country;
 
 @Component
-public class CountryParser implements LineParser<Country> {
+public class CountryParser extends AbstractParser<Country> {
 
 	private static final Logger LOG = LoggerFactory.getLogger(CountryParser.class);
 

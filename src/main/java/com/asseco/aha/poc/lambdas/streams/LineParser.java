@@ -6,4 +6,6 @@ import java.util.stream.Stream;
 public interface LineParser<T> {
 
 	public List<T> parse(Stream<String> lines);
+
+	public List<T> read(String fileName);
 }
