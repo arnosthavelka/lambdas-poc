@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import com.asseco.aha.poc.lambdas.streams.dto.City;
 
@@ -26,7 +27,17 @@ public class CityParser extends AbstractParser<City> {
 			City mdo = new City();
 			mdo.setName(strings[2]);
 			mdo.setCountryCode(strings[0].toUpperCase());
-			mdo.setRegion(strings[3]);
+			if (StringUtils.isEmpty(strings[3])) {
+				LOG.debug("Skipping city {}", strings[2]);
+				// skip this city
+				return null;
+			}
+			try {
+				mdo.setRegion(Integer.parseInt(strings[3]));
+			} catch (NumberFormatException nfe) {
+				// skip this city
+				return null;
+			}
 			return mdo;
 		}).filter(Objects::nonNull).collect(Collectors.toList());
 		LOG.debug("No. of parsed cities={}", countries.size());

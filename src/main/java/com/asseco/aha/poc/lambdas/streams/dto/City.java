@@ -6,7 +6,7 @@ public class City {
 
 	private String countryCode;
 
-	private String region;
+	private int region;
 
 	public String getName() {
 		return name;
@@ -24,11 +24,11 @@ public class City {
 		this.countryCode = countryCode;
 	}
 
-	public String getRegion() {
+	public int getRegion() {
 		return region;
 	}
 
-	public void setRegion(String region) {
+	public void setRegion(int region) {
 		this.region = region;
 	}
 

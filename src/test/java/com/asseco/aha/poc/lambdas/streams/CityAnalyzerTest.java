@@ -5,6 +5,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -37,9 +39,8 @@ public class CityAnalyzerTest {
 	public void analyzeData() throws Exception {
 		LOG.debug("Starting city analyzer ...");
 		
-		// parsing lines2dto
+		// parsing cities
 		List<City> cities = parser.readZip("worldcitiespop.zip", "worldcitiespop.txt");
-
 		// reading countries for better logging
 		List<Country> countries = countryParser.readFile("iso3166.csv");
 
@@ -59,13 +60,24 @@ public class CityAnalyzerTest {
 		LOG.info("The top 10 countries with most cities are: {}", ttEntries);
 
 		// calculate cities in countries and regions
-		// TODO
+		Map<Integer, Map<String, Long>> statEntries = cities.stream().collect(Collectors.groupingBy(City::getRegion, Collectors.groupingBy(City::getCountryCode, Collectors.counting())));
+		List<Entry<Integer, Map<String, Long>>> rsEntries = statEntries.entrySet().stream().limit(5).collect(Collectors.toList());
+		LOG.info("Region (0-4) statistics:");
+		for (Entry<Integer, Map<String, Long>> region : rsEntries) {
+			Set<Entry<String, Long>> valueEntrySet = region.getValue().entrySet();
+			long regionCityCount = valueEntrySet.stream().collect(Collectors.summarizingLong(Map.Entry::getValue)).getSum();
+			LOG.info("\t{} [size={}]", region.getKey(), regionCityCount);
+			for (Entry<String, Long> country : valueEntrySet) {
+				LOG.info("\t\t{} ({}) [No. of cities={}]", getCountryName(countries, country.getKey()), country.getKey(), country.getValue());
+			}
+
+		}
 
 		LOG.debug("City analyzer finished.");
 	}
 
 	private String getCountryName(List<Country> countries, String code) {
-		Country country = countries.stream().filter(s -> s.getCode().equals(code)).findFirst().get();
-		return country.getName();
+		Optional<Country> country = countries.stream().filter(s -> s.getCode().equals(code)).findFirst();
+		return country.isPresent() ? country.get().getName() : "N/A";
 	}
 }
