@@ -1,8 +1,12 @@
 package com.asseco.aha.poc.lambdas.streams;
 
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.junit.Test;
@@ -44,11 +48,24 @@ public class CityAnalyzerTest {
 
 		// pick the country with max cities
 		Entry<String, Long> entry = entries.entrySet().stream().max(Map.Entry.comparingByValue()).get();
-		Country country = countries.stream().filter(s -> s.getCode().equals(entry.getKey())).findFirst().get();
-		LOG.info("The country with most cities is: {} ({}) [No of cities: {}]", country.getName(), entry.getKey(), entry.getValue());
+		LOG.info("The country with most cities is: {} ({}) [No of cities: {}]", getCountryName(countries, entry.getKey()), entry.getKey(), entry.getValue());
+		// pick the top 10
+		Comparator<Entry<String, Long>> comparator = Comparator.comparingLong(Map.Entry::getValue);
+		List<Entry<String, Long>> topEntries = entries.entrySet().stream().sorted(comparator.reversed()).limit(10).collect(Collectors.toList());
+		Function<? super Entry<String, Long>, ? extends String> keyMapper = k -> getCountryName(countries, k.getKey());
+		BinaryOperator<Long> mergeFunction = (v1, v2) -> v1;
+		// Map implementation must be defined to preserve sorting
+		Map<String, Long> ttEntries = topEntries.stream().collect(Collectors.toMap(keyMapper, Map.Entry::getValue, mergeFunction, LinkedHashMap::new));
+		LOG.info("The top 10 countries with most cities are: {}", ttEntries);
 
+		// calculate cities in countries and regions
+		// TODO
 
 		LOG.debug("City analyzer finished.");
 	}
 
+	private String getCountryName(List<Country> countries, String code) {
+		Country country = countries.stream().filter(s -> s.getCode().equals(code)).findFirst().get();
+		return country.getName();
+	}
 }

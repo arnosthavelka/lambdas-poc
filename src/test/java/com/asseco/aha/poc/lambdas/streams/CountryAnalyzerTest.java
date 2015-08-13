@@ -44,8 +44,8 @@ public class CountryAnalyzerTest {
 		Entry<String, Long> entry = entries.entrySet().stream().max(Map.Entry.comparingByValue()).get();
 		LOG.info("The most used starting letter is: {}", entry);
 		// sort by value and pick the top 5
-		Comparator<? super Entry<String, Long>> predictByValue = (v1, v2) -> Long.valueOf(v2.getValue() - v1.getValue()).intValue();
-		List<Entry<String, Long>> topEntries = entries.entrySet().stream().sorted(predictByValue).limit(5).collect(Collectors.toList());
+		Comparator<Entry<String, Long>> comparator = Comparator.comparingLong(Map.Entry::getValue);
+		List<Entry<String, Long>> topEntries = entries.entrySet().stream().sorted(comparator.reversed()).limit(5).collect(Collectors.toList());
 		LOG.info("The top 5 starting letters are: {}", topEntries);
 
 		LOG.debug("Country analyzer finished.");
