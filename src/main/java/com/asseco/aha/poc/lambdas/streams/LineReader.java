@@ -26,7 +26,6 @@ public class LineReader implements Closeable {
 		} catch (IOException e) {
 			throw new RuntimeException(String.format("File %s is not readable!", fileName), e);
 		}
-		// parsing lines2dto
 		return lines;
 	}
 

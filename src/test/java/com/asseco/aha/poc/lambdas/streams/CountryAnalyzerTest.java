@@ -1,5 +1,6 @@
 package com.asseco.aha.poc.lambdas.streams;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -38,9 +39,14 @@ public class CountryAnalyzerTest {
 
 		// grouping example (calculate countries by the first letter in their code)
 		Map<String, Long> entries = countries.stream().collect(Collectors.groupingBy(s -> s.getCode().substring(0, 1), Collectors.counting()));
-		Entry<String, Long> entry = entries.entrySet().stream().max(Map.Entry.comparingByValue()).get();
 		LOG.info("Countries statistics: {}", entries);
+		// pick the max value
+		Entry<String, Long> entry = entries.entrySet().stream().max(Map.Entry.comparingByValue()).get();
 		LOG.info("The most used starting letter is: {}", entry);
+		// sort by value and pick the top 5
+		Comparator<? super Entry<String, Long>> predictByValue = (v1, v2) -> Long.valueOf(v2.getValue() - v1.getValue()).intValue();
+		List<Entry<String, Long>> topEntries = entries.entrySet().stream().sorted(predictByValue).limit(5).collect(Collectors.toList());
+		LOG.info("The top 5 starting letters are: {}", topEntries);
 
 		LOG.debug("Country analyzer Finished.");
 	}
