@@ -26,10 +26,10 @@ public class CaloryAnalyzerTest {
 	private CaloryParser parser;
 
 	@Test
-	public void testExact() throws Exception {
+	public void analyzeData() throws Exception {
 		LOG.debug("Starting calory analyzer ...");
 		// parsing lines2dto
-		List<Calory> calories = parser.read("calories.csv");
+		List<Calory> calories = parser.readFile("calories.csv");
 		LOG.info("No. of calories={}", calories.size());
 
 		// find most used measure where carbo < 10
@@ -37,7 +37,7 @@ public class CaloryAnalyzerTest {
 		Entry<String, Long> entry = entries.stream().max(Entry.comparingByValue()).get();
 		LOG.info("The most used measure in food is: {}", entry);
 		
-		LOG.debug("Country calory Finished.");
+		LOG.debug("Calory analyzer finished.");
 	}
 
 }

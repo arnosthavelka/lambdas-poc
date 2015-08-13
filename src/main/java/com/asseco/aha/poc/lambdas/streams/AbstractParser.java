@@ -13,8 +13,15 @@ public abstract class AbstractParser<T> implements LineParser<T> {
 	private LineReader reader;
 
 	@Override
-	public List<T> read(String fileName) {
+	public List<T> readFile(String fileName) {
 		try (Stream<String> lines = reader.read(fileName)) {
+			return this.parse(lines);
+		}
+	}
+
+	@Override
+	public List<T> readZip(String zipName, String fileName) {
+		try (Stream<String> lines = reader.readZip(zipName, fileName)) {
 			return this.parse(lines);
 		}
 	}

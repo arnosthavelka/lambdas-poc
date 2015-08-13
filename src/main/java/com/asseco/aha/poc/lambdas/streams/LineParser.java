@@ -7,5 +7,7 @@ public interface LineParser<T> {
 
 	public List<T> parse(Stream<String> lines);
 
-	public List<T> read(String fileName);
+	public List<T> readFile(String fileName);
+	
+	public List<T> readZip(String zipName, String fileName);
 }

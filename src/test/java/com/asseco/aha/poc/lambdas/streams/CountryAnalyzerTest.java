@@ -27,10 +27,10 @@ public class CountryAnalyzerTest {
 	private CountryParser parser;
 
 	@Test
-	public void testExact() throws Exception {
+	public void analyzeData() throws Exception {
 		LOG.debug("Starting country analyzer ...");
 		// parsing lines2dto
-		List<Country> countries = parser.read("iso3166.csv");
+		List<Country> countries = parser.readFile("iso3166.csv");
 		LOG.info("No. of countries={}", countries.size());
 
 		// filtering example (cities starting on "Co")
@@ -48,7 +48,7 @@ public class CountryAnalyzerTest {
 		List<Entry<String, Long>> topEntries = entries.entrySet().stream().sorted(predictByValue).limit(5).collect(Collectors.toList());
 		LOG.info("The top 5 starting letters are: {}", topEntries);
 
-		LOG.debug("Country analyzer Finished.");
+		LOG.debug("Country analyzer finished.");
 	}
 
 }
