@@ -3,6 +3,7 @@ package com.asseco.aha.poc.lambdas.streams;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.junit.Test;
@@ -25,6 +26,14 @@ public class CaloryAnalyzerTest {
 	@Autowired
 	private CaloryParser parser;
 
+	private Predicate<Calory> isDriedUp50() {
+		return p -> "Dried".equals(p.getMeasure()) && p.getCarbo() < 50;
+	}
+
+	public List<Calory> filterCalories(List<Calory> data, Predicate<Calory> predicate) {
+		return data.stream().filter(predicate).collect(Collectors.<Calory> toList());
+	}
+
 	@Test
 	public void analyzeData() throws Exception {
 		LOG.debug("Starting calory analyzer ...");
@@ -37,6 +46,10 @@ public class CaloryAnalyzerTest {
 		Entry<String, Long> entry = entries.stream().max(Entry.comparingByValue()).get();
 		LOG.info("The most used measure in food is: {}", entry);
 		
+		List<Calory> filterCalories = filterCalories(calories, isDriedUp50());
+		LOG.info("The filtered calories by measure='Dried' and carbo < 50 are:");
+		filterCalories.forEach(c -> LOG.info("\t- {}", c.getName()));
+
 		LOG.debug("Calory analyzer finished.");
 	}
 
