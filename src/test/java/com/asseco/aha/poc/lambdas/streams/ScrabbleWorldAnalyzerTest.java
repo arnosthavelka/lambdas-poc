@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.asseco.aha.poc.lambdas.LambdasPocApplication;
@@ -24,7 +24,7 @@ import com.asseco.aha.poc.lambdas.LambdasPocApplication;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = LambdasPocApplication.class)
+@SpringBootTest(classes = LambdasPocApplication.class)
 public class ScrabbleWorldAnalyzerTest {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ScrabbleWorldAnalyzerTest.class);
