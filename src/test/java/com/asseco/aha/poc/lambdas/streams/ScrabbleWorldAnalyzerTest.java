@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.asseco.aha.poc.lambdas.LambdasPocApplication;
 
@@ -23,7 +23,7 @@ import com.asseco.aha.poc.lambdas.LambdasPocApplication;
  * @See https://github.com/JosePaumard/jdk8-lambda-tour/blob/master/src/org/paumard/jdk8/Scrabble.java
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest(classes = LambdasPocApplication.class)
 public class ScrabbleWorldAnalyzerTest {
 

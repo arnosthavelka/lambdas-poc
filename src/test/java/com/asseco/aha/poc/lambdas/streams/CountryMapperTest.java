@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.asseco.aha.poc.lambdas.LambdasPocApplication;
 import com.asseco.aha.poc.lambdas.streams.dto.Country;
@@ -18,7 +18,7 @@ import com.asseco.aha.poc.lambdas.streams.dto.Country;
 /**
  * Based on this article https://dzone.com/articles/Towards-More-Functional-Java-Using-Streams-and-Lambdas?edition=155254&utm_source=Weekly%20Digest&utm_medium=email&utm_campaign=wd%202016-08-31.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest(classes = LambdasPocApplication.class)
 public class CountryMapperTest {
 
