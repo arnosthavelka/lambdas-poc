@@ -2,6 +2,9 @@ package com.github.aha.poc.lambdas.streams;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -21,7 +24,20 @@ public class SimpleTest {
 		            .findFirst()
 		            .get();
 		LOG.debug("First value is {}", a);
-
 	}
+	
+    @Test
+    public void test() {
+        Random randomizer = new Random();
+        int MAX_SIZE = 4;
+        List<Integer> values = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        Stream<Integer> boxed = IntStream.range(0, (values.size() + MAX_SIZE - 1) / MAX_SIZE).boxed();
+        boxed.parallel().forEach(i -> {
+            int timeout = randomizer.nextInt(1000);
+            LOG.debug("Part {} is waiting {}ms", i, timeout);
+            List<Integer> subList = values.subList(i * MAX_SIZE, Integer.min(MAX_SIZE * (i + 1), values.size()));
+            subList.stream().forEach(v -> LOG.debug("Part {} - value {}", i, v));
+        });
+    }
 
 }
