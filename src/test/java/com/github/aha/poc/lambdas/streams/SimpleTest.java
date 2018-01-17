@@ -1,5 +1,6 @@
 package com.github.aha.poc.lambdas.streams;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -27,7 +28,7 @@ public class SimpleTest {
 	}
 	
     @Test
-    public void test() {
+    public void boxing() {
         Random randomizer = new Random();
         int MAX_SIZE = 4;
         List<Integer> values = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
@@ -40,4 +41,22 @@ public class SimpleTest {
         });
     }
 
+
+    @Test
+    public void reduce() {
+        BigDecimal remaing = BigDecimal.valueOf(9);
+        List<Integer> values = Arrays.asList(5, 3, 3, 4, 5);
+        LOG.debug("Staring reduce with remaining value={}", remaing);
+        values.stream().map(BigDecimal::valueOf).reduce(remaing, (rem, value) -> {
+            if (BigDecimal.ZERO.compareTo(rem) < 0) {
+                BigDecimal rest = rem.subtract(value);
+                LOG.debug("Procesing value={}, remains={}", value, rest);
+                return rest;
+            }
+            LOG.debug("Ignoring value={}", value);
+            return rem;
+        });
+
+    }
+    
 }
